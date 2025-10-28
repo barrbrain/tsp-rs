@@ -68,18 +68,19 @@ pub(crate) fn two_opt<T>(i: usize, j: usize, path: &mut Tour<T>) -> Option<f64>
 where
     T: Metrizable + Clone,
 {
-    let mut new_path = Vec::from(&path.path[..i]);
-    let mut middle = Vec::from(&path.path[i..j]);
-    middle.reverse();
-    new_path.append(&mut middle);
-    new_path.append(&mut Vec::from(&path.path[j..]));
+    let i_1 = if i == 0 { path.path.len() - 1 } else { i - 1 };
+    let j_1 = if j == 0 { path.path.len() - 1 } else { j - 1 };
 
-    let new_path = Tour { path: new_path };
-    let prev_len = path.tour_len();
-    let post_len = new_path.tour_len();
+    if j_1 == i || i_1 == j {
+        return None;
+    }
+
+    let prev_len = path.path[i].cost(&path.path[i_1]) + path.path[j].cost(&path.path[j_1]);
+    let post_len = path.path[i].cost(&path.path[j]) + path.path[i_1].cost(&path.path[j_1]);
 
     if post_len < prev_len {
-        path.path = new_path.path;
+        let middle = &mut path.path[i..j];
+        middle.reverse();
         Some(post_len - prev_len)
     } else {
         None
