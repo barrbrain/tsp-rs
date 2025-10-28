@@ -194,7 +194,7 @@ impl<T: Metrizable + Clone + Borrow<T>> Tour<T> {
         let nodes = index_path(&self.path);
         let mut visited = HashSet::new();
 
-        let start_index: usize = rand::thread_rng().gen_range(0, nodes.len());
+        let start_index: usize = rand::rng().random_range(0..nodes.len());
         let mut curr = &nodes[start_index].value.clone();
         path.push(curr.clone());
         visited.insert(nodes[start_index].index);

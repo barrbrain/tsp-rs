@@ -110,7 +110,7 @@ pub(crate) fn rand_index<T>(path: &Tour<T>) -> usize
 where
     T: Metrizable,
 {
-    rand::thread_rng().gen_range(0, path.path.len())
+    rand::rng().random_range(0..path.path.len())
 }
 
 #[cfg(test)]
